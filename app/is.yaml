@@ -1,0 +1,16 @@
+apiVersion: image.openshift.io/v1
+kind: ImageStream
+metadata:
+  annotations:
+    openshift.io/generated-by: OpenShiftNewApp
+  labels:
+    app: my-php
+    app.kubernetes.io/component: my-php
+    app.kubernetes.io/instance: my-php
+    app.kubernetes.io/name: php
+  name: my-php
+  namespace: mytestapp
+spec:
+  lookupPolicy:
+    local: false
+

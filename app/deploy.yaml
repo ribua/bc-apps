@@ -1,0 +1,50 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    deployment.kubernetes.io/revision: "1"
+    image.openshift.io/triggers: '[{"from":{"kind":"ImageStreamTag","name":"my-php:latest"},"fieldPath":"spec.template.spec.containers[?(@.name==\"my-php\")].image"}]'
+    openshift.io/generated-by: OpenShiftNewApp
+  labels:
+    app: my-php
+    app.kubernetes.io/component: my-php
+    app.kubernetes.io/instance: my-php
+    app.kubernetes.io/name: php
+  name: my-php
+  namespace: mytestapp
+spec:
+  progressDeadlineSeconds: 600
+  replicas: 1
+  revisionHistoryLimit: 10
+  selector:
+    matchLabels:
+      deployment: my-php
+  strategy:
+    rollingUpdate:
+      maxSurge: 25%
+      maxUnavailable: 25%
+    type: RollingUpdate
+  template:
+    metadata:
+      annotations:
+        openshift.io/generated-by: OpenShiftNewApp
+      creationTimestamp: null
+      labels:
+        deployment: my-php
+    spec:
+      containers:
+      - image: ' '
+        imagePullPolicy: IfNotPresent
+        name: my-php
+        ports:
+        - containerPort: 8080
+          protocol: TCP
+        - containerPort: 8443
+          protocol: TCP
+        terminationMessagePath: /dev/termination-log
+        terminationMessagePolicy: File
+      dnsPolicy: ClusterFirst
+      restartPolicy: Always
+      schedulerName: default-scheduler
+      terminationGracePeriodSeconds: 30
+

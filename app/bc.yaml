@@ -1,0 +1,42 @@
+apiVersion: build.openshift.io/v1
+kind: BuildConfig
+metadata:
+  annotations:
+    openshift.io/generated-by: OpenShiftNewApp
+  labels:
+    app: my-php
+    app.kubernetes.io/component: my-php
+    app.kubernetes.io/instance: my-php
+    app.kubernetes.io/name: php
+  name: my-php
+  namespace: mytestapp
+spec:
+  failedBuildsHistoryLimit: 5
+  nodeSelector: null
+  output:
+    to:
+      kind: ImageStreamTag
+      name: my-php:latest
+  runPolicy: Serial
+  source:
+    git:
+      uri: https://github.com/ribua/bc-apps.git
+    type: Git
+  strategy:
+    sourceStrategy:
+      from:
+        kind: ImageStreamTag
+        name: php:latest
+        namespace: openshift
+    type: Source
+  successfulBuildsHistoryLimit: 5
+  triggers:
+  - github:
+      secret: OWuVzu5mpnqIRyC2WHzK
+    type: GitHub
+  - generic:
+      secret: oDsb3rWMwXZk1P66gSjh
+    type: Generic
+  - type: ConfigChange
+  - type: ImageChange
+
